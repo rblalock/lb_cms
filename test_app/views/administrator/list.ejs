@@ -1,0 +1,41 @@
+<% include partials/header.ejs %>
+<% include partials/navbar.ejs %>
+
+<div class="container">
+	<div class="row">
+		<% include partials/sidebar.ejs %>
+
+		<div class="col-md-10">
+			<div class="pull-right">
+				<a href="/administrator/detail?model=<%= modelName %>" class="btn btn-primary" role="button">New</a>
+			</div>
+
+			<div class="page-header">
+				<h1><%= modelName %> <small><%= recordCount %> records</small></h1>
+			</div>
+
+			<table class="table table-hover table-striped">
+				<tr>
+					<% for(var i = 0; i < headers.length; i++) { %>
+						<th><%= headers[i] %></th>
+					<% } %>
+				</tr>
+
+				<% for(var k = 0; k < data.length; k++) { %>
+					<tr>
+						<% for(var i = 0; i < headers.length; i++) { %>
+							<td><a href="/administrator/detail?model=<%= modelName %>&id=<%= data[k][idField] %>"><%= data[k][headers[i]] %></a></td>
+						<% } %>
+					</tr>
+				<% } %>
+			</table>
+		</div>
+	</div>
+
+	<hr>
+
+	<% include partials/footer.ejs %>
+</div>
+<!--/.fluid-container-->
+
+<% include partials/scripts.ejs %>

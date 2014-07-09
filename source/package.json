@@ -1,0 +1,19 @@
+{
+  "name": "strongloop_cms",
+  "version": "0.0.1",
+  "description": "CMS for StrongLoop",
+  "main": "index.js",
+  "dependencies": {
+    "underscore": "*",
+    "body-parser": "~1.4.3"
+  },
+  "author": {
+    "name": "Rick Blalock"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.3.x"
+  }
+}

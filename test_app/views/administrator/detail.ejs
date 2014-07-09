@@ -1,0 +1,59 @@
+<% include partials/header.ejs %>
+<% include partials/navbar.ejs %>
+
+<div class="container">
+	<div class="row">
+		<% include partials/sidebar.ejs %>
+
+		<div class="col-md-10">
+			<% if(data) { %>
+			<div class="pull-right">
+				<a href="/administrator/detail?model=<%= modelName %>&id=<%= id %>" class="btn btn-danger" role="button">Delete</a>
+			</div>
+			<% } %>
+
+			<div class="page-header">
+				<h1><%= !data ? "New" : "" %> <%= modelName %> <small><%= data ? data[idField] : "" %></small></h1>
+			</div>
+
+			<% if(success === "true") { %>
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>Success!</strong> Your updates were saved.
+			</div>
+			<% } %>
+
+			<% if(success === "false") { %>
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>Error:</strong> Something went wrong with your request
+			</div>
+			<% } %>
+
+			<form role="form" action="/administrator/detail?model=<%= modelName %>&id=<%= id ? id : null %>" method="post">
+				<% for(var i = 0; i < headers.length; i++) { %>
+					<% if(headers[i] !== "id") { %>
+					<div class="form-group">
+						<label for="<%= headers[i] %>"><%= headers[i] %></label>
+						<input name="<%= headers[i] %>" type="text" class="form-control" id="<%= headers[i] %>" placeholder="Enter <%- headers[i] %>" value="<% if(data) { %> <%= data[headers[i]] %> <% } %>">
+					</div>
+					<% } %>
+				<% } %>
+
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	</div>
+	<!--/row-->
+
+	<hr>
+
+	<% include partials/footer.ejs %>
+</div>
+<!--/.fluid-container-->
+
+<% include partials/scripts.ejs %>
