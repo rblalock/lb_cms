@@ -6,12 +6,6 @@
 		<% include partials/sidebar.ejs %>
 
 		<div class="col-md-10">
-			<% if(data) { %>
-			<div class="pull-right">
-				<a href="/administrator/detail?model=<%= modelName %>&id=<%= id %>" class="btn btn-danger" role="button">Delete</a>
-			</div>
-			<% } %>
-
 			<div class="page-header">
 				<h1><%= !data ? "New" : "" %> <%= modelName %> <small><%= data ? data[idField] : "" %></small></h1>
 			</div>
@@ -36,15 +30,20 @@
 
 			<form role="form" action="/administrator/detail?model=<%= modelName %>&id=<%= id ? id : null %>" method="post">
 				<% for(var i = 0; i < headers.length; i++) { %>
-					<% if(headers[i] !== "id") { %>
+					<% if(fields[i].key !== "id") { %>
 					<div class="form-group">
-						<label for="<%= headers[i] %>"><%= headers[i] %></label>
-						<input name="<%= headers[i] %>" type="text" class="form-control" id="<%= headers[i] %>" placeholder="Enter <%- headers[i] %>" value="<% if(data) { %> <%= data[headers[i]] %> <% } %>">
+						<label for="<%= headers[i] %>"><%= fields[i].key %></label>
+						<%- fields[i].html %>
 					</div>
 					<% } %>
 				<% } %>
 
-				<button type="submit" class="btn btn-default">Submit</button>
+				<button type="submit" class="btn btn-primary">Submit</button>
+				<% if(data) { %>
+				<div class="pull-right">
+					<a href="/administrator/detail?action=delete&model=<%= modelName %>&id=<%= id %>" class="btn btn-danger" role="button">Delete</a>
+				</div>
+				<% } %>
 			</form>
 		</div>
 	</div>

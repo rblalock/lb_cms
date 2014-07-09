@@ -6,11 +6,11 @@
 		<% include partials/sidebar.ejs %>
 
 		<div class="col-md-10">
-			<div class="pull-right">
-				<a href="/administrator/detail?model=<%= modelName %>" class="btn btn-primary" role="button">New</a>
-			</div>
-
 			<div class="page-header">
+				<div class="pull-right">
+					<a href="/administrator/detail?model=<%= modelName %>" class="btn btn-primary" role="button">New</a>
+				</div>
+
 				<h1><%= modelName %> <small><%= recordCount %> records</small></h1>
 			</div>
 
