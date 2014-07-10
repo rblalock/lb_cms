@@ -41,7 +41,42 @@ module.exports = function() {
 					headers: headers,
 					modelName: _req.query.model,
 					idField: idField,
-					modelsMenu: modelsMenu
+					modelsMenu: modelsMenu,
+					filters: {
+						key: headers[0],
+						text: ""
+					}
+				});
+			});
+		}
+	});
+
+	/**
+	 * The model list screen
+	 */
+	CMS.App.post("/administrator/list", function(_req, _res) {
+		if(CMS.App.models[_req.query.model]) {
+			var query = { where: {} };
+			query.where[_req.body.searchFilterValue] = {
+				like: _req.body.search
+			};
+
+			CMS.App.models[_req.query.model].find(query, function(_err, _data) {
+				var idField = helpers.determineIdField(_req.query.model);
+				var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
+
+				_res.render("list", {
+					title: CMS.params.title,
+					data: _data,
+					recordCount: _data.length,
+					headers: headers,
+					modelName: _req.query.model,
+					idField: idField,
+					modelsMenu: modelsMenu,
+					filters: {
+						key: _req.body.searchFilterValue,
+						text: _req.body.search
+					}
 				});
 			});
 		}

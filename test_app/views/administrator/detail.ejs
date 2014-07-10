@@ -28,22 +28,25 @@
 			</div>
 			<% } %>
 
-			<form role="form" action="/administrator/detail?model=<%= modelName %>&id=<%= id ? id : null %>" method="post">
+			<form class="form-horizontal" role="form" action="/administrator/detail?model=<%= modelName %>&id=<%= id ? id : null %>" method="post">
 				<% for(var i = 0; i < headers.length; i++) { %>
 					<% if(fields[i].key !== "id") { %>
 					<div class="form-group">
-						<label for="<%= headers[i] %>"><%= fields[i].key %></label>
-						<%- fields[i].html %>
+						<label class="col-sm-2" for="<%= headers[i] %>"><%= fields[i].key %></label>
+
+						<div class="col-sm-10">
+							<%- fields[i].html %>
+						</div>
 					</div>
 					<% } %>
 				<% } %>
 
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<hr />
+
+				<button type="submit" class="btn btn-lg btn-default">Save</button>
 
 				<% if(data) { %>
-				<div class="pull-right">
-					<a href="/administrator/detail?action=delete&model=<%= modelName %>&id=<%= id %>" class="btn btn-danger" role="button">Delete</a>
-				</div>
+				<a href="/administrator/detail?action=delete&model=<%= modelName %>&id=<%= id %>" class="btn" role="button">Delete</a>
 				<% } %>
 			</form>
 		</div>
@@ -57,3 +60,4 @@
 <!--/.fluid-container-->
 
 <% include partials/scripts.ejs %>
+<% include partials/end.ejs %>
