@@ -15,10 +15,6 @@
 			</div>
 
 			<form action="/administrator/list?model=<%= modelName %>" method="post" role="form" id="toolbar" class="form-inline">
-				<!--<div class="form-group">-->
-					<!---->
-				<!--</div>-->
-
 				<div class="input-group">
 					<input value="<%= filters.text %>" name="search" type="search" class="form-control" id="search" placeholder="Search...">
 
@@ -39,6 +35,10 @@
 				<input name="searchFilterValue" type="hidden" id="searchFilterValue" value="<%= filters.key %>" />
 
 				<button type="submit" class="btn btn-default">Search</button>
+
+				<% if(filters.text) { %>
+				<a class="btn" href="/administrator/list?model=<%= modelName %>">reset</a>
+				<% } %>
 			</form>
 
 			<hr />

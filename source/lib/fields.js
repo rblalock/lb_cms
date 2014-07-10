@@ -51,8 +51,8 @@ module.exports = {
 	Select: function(_name, _value, _properties) {
 		var select = '<select name="' + _name + '" id="' + _name + '" class="form-control">';
 
-		if(_properties.selectOptions) {
-			_properties.selectOptions.forEach(function(_option) {
+		if(_properties.cms.selectOptions) {
+			_properties.cms.selectOptions.forEach(function(_option) {
 				var selected = "";
 
 				if(_value === _option) {

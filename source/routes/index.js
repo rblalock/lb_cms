@@ -52,14 +52,17 @@ module.exports = function() {
 	});
 
 	/**
-	 * The model list screen
+	 * POST to the model screen (for search)
 	 */
 	CMS.App.post("/administrator/list", function(_req, _res) {
 		if(CMS.App.models[_req.query.model]) {
-			var query = { where: {} };
-			query.where[_req.body.searchFilterValue] = {
-				like: _req.body.search
-			};
+			var query = {};
+			if(_req.body.search) {
+				query.where = {};
+				query.where[_req.body.searchFilterValue] = {
+					like: _req.body.search
+				};
+			}
 
 			CMS.App.models[_req.query.model].find(query, function(_err, _data) {
 				var idField = helpers.determineIdField(_req.query.model);

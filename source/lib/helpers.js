@@ -35,9 +35,9 @@ module.exports = {
 		for (var prop in _properties) {
 			var obj = _properties[prop];
 
-			if (obj.fieldType) {
+			if (obj.cms.fieldType) {
 				fields.push(
-					CMS.FieldGenerator[obj.fieldType](prop, _data[prop] || null, _properties[prop])
+					CMS.FieldGenerator[obj.cms.fieldType](prop, _data[prop] || null, _properties[prop])
 				);
 			}
 		}

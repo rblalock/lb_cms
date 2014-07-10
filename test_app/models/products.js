@@ -2,10 +2,32 @@ var loopback = require("loopback");
 var ds = loopback.createDataSource("memory");
 
 var Product = ds.createModel("product", {
-	id: { type: Number, id: true, fieldType: "Textfield" },
-	name: { type: String, fieldType: "Textfield" },
-	description: { type: String, fieldType: "Textarea" },
-	type: { type: String, fieldType: "Select", selectOptions: ["Beverage", "Torta", "Dessert"] }
+	id: {
+		type: Number,
+		id: true,
+		cms: {
+			fieldType: "Textfield"
+		}
+	},
+	name: {
+		type: String,
+		cms: {
+			fieldType: "Textfield"
+		}
+	},
+	description: {
+		type: String,
+		cms: {
+			fieldType: "Textarea"
+		}
+	},
+	type: {
+		type: String,
+		cms: {
+			fieldType: "Select",
+			selectOptions: ["Beverage", "Torta", "Dessert"]
+		}
+	}
 });
 
 // Dummy Data
