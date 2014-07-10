@@ -5,7 +5,6 @@
 var CMS = require("../");
 var _ = require("lodash");
 var helpers = require("../lib/helpers");
-var fieldBuilder = require("../lib/fields");
 
 // For the model menus TODO should go elsewhere
 var modelsMenu = [];
@@ -61,32 +60,26 @@ module.exports = function() {
 			} else {
 				// Handle getting record by ID
 				CMS.App.models[_req.query.model].findById(_req.query.id, function(_err, _data) {
-					var idField = helpers.determineIdField(_req.query.model);
-					var properties = CMS.App.models[_req.query.model].definition.properties;
-					var headers = Object.keys(properties);
-					var fields = [];
+					if(!_err) {
+						var properties = CMS.App.models[_req.query.model].definition.properties;
+						var headers = Object.keys(properties);
+						var fields = helpers.renderFields(_data, properties);
+						var idField = helpers.determineIdField(_req.query.model);
 
-					for(var prop in properties) {
-						var obj = properties[prop];
+						_res.render("detail", {
+							title: CMS.params.title,
+							data: _data,
+							fields: fields,
+							headers: headers,
+							modelName: _req.query.model,
+							idField: idField,
+							id: _req.query.id,
+							modelsMenu: modelsMenu,
+							success: _req.query.success
+						});
+					} else {
 
-						if(obj.fieldType && _data[prop]) {
-							fields.push(
-								fieldBuilder[obj.fieldType](prop, _data[prop])
-							);
-						}
 					}
-					
-					_res.render("detail", {
-						title: CMS.params.title,
-						data: _data,
-						fields: fields,
-						headers: headers,
-						modelName: _req.query.model,
-						idField: idField,
-						id: _req.query.id,
-						modelsMenu: modelsMenu,
-						success: _req.query.success
-					});
 				});
 			}
 		}
@@ -96,15 +89,21 @@ module.exports = function() {
 	 * The model record post
 	 */
 	CMS.App.post("/administrator/detail", function(_req, _res) {
-		if(CMS.App.models[_req.query.model] && _req.query.id) {
+		if(CMS.App.models[_req.query.model]) {
+			var idField = helpers.determineIdField(_req.query.model);
+			
+			if(_req.query.id !== "null") {
+				_req.body[idField] = _req.query.id;
+			}
+
 			// Update and redirect to the detail screen again
 			CMS.App.models[_req.query.model].upsert(_req.body, function(_err, _data) {
-				var idField = helpers.determineIdField(_req.query.model);
+				var query = (_req.query.id === "null") ? "&id=" + _data[idField] : "";
 
 				if(!_err) {
-					_res.redirect(_req.get("referrer") + "&success=true&id=" + _data[idField]);
+					_res.redirect(_req.get("referrer") + "&success=true" + query);
 				} else {
-					_res.redirect(_req.get("referrer") + "&success=false");
+					_res.redirect(_req.get("referrer") + "&success=false" + query);
 				}
 			});
 		}

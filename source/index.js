@@ -9,16 +9,24 @@ var bodyParser = require("body-parser");
 var CMS = {
 	/**
 	 * The express app instance - i.e. var app = loopback();
+	 * @type {Object}
 	 */
 	App: {},
 	/**
 	 * The static loopback module reference - i.e. var loopback = require("loopback");
+	 * @type {Object}
 	 */
 	Loopback: {},
 	/**
 	 * Properties set to this CMS
+	 * @type {Object}
 	 */
 	Params: {},
+	/**
+	 * The field generator module.  This is exposed here so it can be overwritten by the developer.
+	 * @type {Object}
+	 */
+	FieldGenerator: require("./lib/fields"),
 	/**
 	 * Inits the app
 	 * @param {Object} _app The express app instance
