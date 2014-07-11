@@ -5,6 +5,7 @@
 var CMS = require("../");
 var _ = require("lodash");
 var helpers = require("../lib/helpers");
+var query = require("../lib/queries");
 
 // For the model menus TODO should go elsewhere
 var modelsMenu = [];
@@ -30,24 +31,11 @@ module.exports = function() {
 	 */
 	CMS.App.get("/administrator/list", function(_req, _res) {
 		if(CMS.App.models[_req.query.model]) {
-			var query = {
-				limit: _req.query.limit || 25,
-				skip: _req.query.skip || 0
-			};
-
-			// TODO need to check the filter key's type in the model property
-			if(_req.query.search) {
-				query.where = {};
-				query.where[_req.query.searchFilterValue] = {
-					like: _req.query.search
-				};
-			}
-			
-			CMS.App.models[_req.query.model].count(query.where, function(_countErr, _countData) {
-				CMS.App.models[_req.query.model].find(query, function(_err, _data) {
+			CMS.App.models[_req.query.model].count(query.list(_req).where, function(_countErr, _countData) {
+				CMS.App.models[_req.query.model].find(query.list(_req), function(_err, _data) {
 					var idField = helpers.determineIdField(_req.query.model);
 					var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
-					
+
 					if(_req.query.format === "json") {
 						_res.send({
 							total: _countData,

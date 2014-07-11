@@ -1,5 +1,5 @@
 /**
- * @class helpers.fields
+ * @class fields
  */
 
 module.exports = {
