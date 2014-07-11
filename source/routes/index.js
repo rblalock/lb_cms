@@ -30,55 +30,42 @@ module.exports = function() {
 	 */
 	CMS.App.get("/administrator/list", function(_req, _res) {
 		if(CMS.App.models[_req.query.model]) {
-			CMS.App.models[_req.query.model].find(function(_err, _data) {
-				var idField = helpers.determineIdField(_req.query.model);
-				var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
+			var query = {
+				limit: _req.query.limit || 25,
+				skip: _req.query.skip || 0
+			};
 
-				_res.render("list", {
-					title: CMS.params.title,
-					data: _data,
-					recordCount: _data.length,
-					headers: headers,
-					modelName: _req.query.model,
-					idField: idField,
-					modelsMenu: modelsMenu,
-					filters: {
-						key: headers[0],
-						text: ""
-					}
-				});
-			});
-		}
-	});
-
-	/**
-	 * POST to the model screen (for search)
-	 */
-	CMS.App.post("/administrator/list", function(_req, _res) {
-		if(CMS.App.models[_req.query.model]) {
-			var query = {};
-			if(_req.body.search) {
+			// TODO need to check the filter key's type in the model property
+			if(_req.query.search) {
 				query.where = {};
-				query.where[_req.body.searchFilterValue] = {
-					like: _req.body.search
+				query.where[_req.query.searchFilterValue] = {
+					like: _req.query.search
 				};
 			}
-
-			CMS.App.models[_req.query.model].find(query, function(_err, _data) {
-				var idField = helpers.determineIdField(_req.query.model);
-				var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
-
-				_res.render("list", {
-					title: CMS.params.title,
-					data: _data,
-					recordCount: _data.length,
-					headers: headers,
-					modelName: _req.query.model,
-					idField: idField,
-					modelsMenu: modelsMenu,
-					filters: {
-						key: _req.body.searchFilterValue,
-						text: _req.body.search
+			
+			CMS.App.models[_req.query.model].count(query.where, function(_countErr, _countData) {
+				CMS.App.models[_req.query.model].find(query, function(_err, _data) {
+					var idField = helpers.determineIdField(_req.query.model);
+					var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
+					
+					if(_req.query.format === "json") {
+						_res.send({
+							total: _countData,
+							rows: _data
+						});
+					} else {
+						_res.render("list", {
+							title: CMS.params.title,
+							data: _data,
+							headers: headers,
+							modelName: _req.query.model,
+							idField: idField,
+							modelsMenu: modelsMenu,
+							filters: {
+								key: _req.query.searchFilterValue || headers[0],
+								text: _req.body.search ||  ""
+							}
+						});
 					}
 				});
 			});

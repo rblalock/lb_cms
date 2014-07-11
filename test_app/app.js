@@ -18,6 +18,7 @@ var cms = require("lb_cms");
 cms.init(app, loopback, {
 	title: "Loopback CMS",
 	viewsOverride: __dirname + "/views/administrator",
+	templateOverride: __dirname + "/public",
 	ignoreModels: ["accessToken", "email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
 });
 

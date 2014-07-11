@@ -35,6 +35,7 @@ var CMS = {
 	 * @param {String} _params.title The title of this CMS
 	 * @param {String} _params.viewsOverride The views directory override for the admin interface
 	 * @param {String} _params.viewEngineOverride The view engine / system
+	 * @param {String} _params.templateOverride The override path for the admin UI template
 	 */
 	init: function (_app, _loopback, _params) {
 		_params = _params || {};
@@ -55,6 +56,12 @@ var CMS = {
 			CMS.App.set("views", _params.viewsOverride);
 		} else {
 			CMS.App.set("views", __dirname + "/views");
+		}
+
+		// Template files override
+		if(_params.templateOverride) {
+			CMS.App.use(CMS.Loopback.static(_params.templateOverride));
+		} else {
 			CMS.App.use(CMS.Loopback.static(path.join(__dirname, "public")));
 		}
 
