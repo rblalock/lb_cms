@@ -84,7 +84,7 @@
 <script type="application/javascript">
 	$(document).ready(function () {
 
-		// Handle search filter dropdown
+		// Handle search and filter dropdowns
 		$("#searchFilter li").on("click", function() {
 			var text = $(this).text();
 			$("#filterTitle").text(text);
@@ -92,6 +92,8 @@
 		});
 
 		// Handle the table
+		var sortName, sortOrder;
+
 		$("#dataGrid").bootstrapTable({
 			method: "get",
 			url: "/administrator/list?model=<%= modelName %>&format=json",
@@ -102,13 +104,19 @@
 			pageSize: 10,
 			search: false,
 			showColumns: true,
+			onSort: function(name, order) {
+				sortName = name;
+				sortOrder = order;
+			},
 			onClickRow: function (row) {
 				window.location = "/administrator/detail?model=<%= modelName %>&id=" + row.id;
 			},
 			queryParams: function (pageSize, pageNumber, search) {
 				return {
 					limit: pageSize,
-					skip: pageSize * (pageNumber - 1)
+					skip: pageSize * (pageNumber - 1),
+					sortName: sortName,
+					sortOrder: sortOrder
 				};
 			}
 		});
@@ -132,10 +140,16 @@
 				onClickRow: function (row) {
 					window.location = "/administrator/detail?model=<%= modelName %>&id=" + row.id;
 				},
+				onSort: function(name, order) {
+					sortName = name;
+					sortOrder = order;
+				},
 				queryParams: function (pageSize, pageNumber, search) {
 					return {
 						limit: pageSize,
-						skip: pageSize * (pageNumber - 1)
+						skip: pageSize * (pageNumber - 1),
+						sortName: sortName,
+						sortOrder: sortOrder
 					};
 				}
 			});

@@ -14,6 +14,10 @@ module.exports = {
 			skip: parseInt(_req.query.skip) || 0
 		};
 
+		if(_req.query.sortOrder && _req.query.sortName) {
+			query.order = _req.query.sortName + " " + _req.query.sortOrder
+		}
+
 		if(_req.query.search) {
 			query.where = {};
 			query.where[_req.query.searchFilterValue] = {
