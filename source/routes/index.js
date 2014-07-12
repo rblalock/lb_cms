@@ -106,7 +106,7 @@ module.exports = function() {
 		if(CMS.App.models[_req.query.model]) {
 			var idField = helpers.determineIdField(_req.query.model);
 			
-			if(_req.query.id !== "null") {
+			if(_req.query.id !== "null") { // <-- ewww
 				_req.body[idField] = _req.query.id;
 			}
 

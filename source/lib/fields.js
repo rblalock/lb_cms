@@ -69,5 +69,19 @@ module.exports = {
 			key: _name,
 			html: select
 		};
+	},
+	/**
+	 * Relation component
+	 * @param {String} _name The key / name of the field
+	 * @param {String} _value (optional) The value to set for this component
+	 * @param {Object} _properties The field schema properties
+	 * @return {String} Returns the html field template
+	 */
+	Relation: function(_name, _value, _properties) {
+		// TODO
+		return {
+			key: _name,
+			html: "<p>TODO</p>"
+		};
 	}
 };

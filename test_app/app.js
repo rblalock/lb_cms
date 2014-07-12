@@ -44,7 +44,7 @@ try {
 	var explorer = require('loopback-explorer')(app);
 	app.use('/explorer', explorer);
 	app.once('started', function (baseUrl) {
-		console.log('Browse your REST API at %s%s', baseUrl, explorer.route);
+//		console.log('Browse your REST API at %s%s', baseUrl, explorer.route);
 	});
 } catch (e) {
 	console.log(
@@ -138,10 +138,12 @@ cms.init(app, loopback, {
 });
 
 app.start = function () {
+	app._didStart = true; // For mocha tests - very fancy stuff right here
+
 	return app.listen(function () {
-		var baseUrl = 'http://' + app.get('host') + ':' + app.get('port');
-		app.emit('started', baseUrl);
-		console.log('LoopBack server listening @ %s%s', baseUrl, '/');
+		var baseUrl = "http://" + app.get('host') + ":" + app.get("port");
+		app.emit("started", baseUrl);
+//		console.log("LoopBack server listening @ %s%s", baseUrl, "/");
 	});
 };
 
