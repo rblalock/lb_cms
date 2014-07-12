@@ -35,7 +35,8 @@ module.exports = function() {
 				CMS.App.models[_req.query.model].find(query.list(_req), function(_err, _data) {
 					var idField = helpers.determineIdField(_req.query.model);
 					var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
-
+					_data = helpers.handleRelationFields(CMS.App.models[_req.query.model], _data, true);
+					
 					if(_req.query.format === "json") {
 						_res.send({
 							total: _countData,

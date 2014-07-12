@@ -10,18 +10,6 @@ var app = module.exports = loopback();
 
 app.boot(__dirname);
 
-// Import the models used in this app
-app.model( require("./models/products") );
-
-// Init the CMS
-var cms = require("lb_cms");
-cms.init(app, loopback, {
-	title: "Loopback CMS",
-	viewsOverride: __dirname + "/views/administrator",
-	templateOverride: __dirname + "/public",
-	ignoreModels: ["accessToken", "email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
-});
-
 /*
  * 2. Configure request preprocessing
  *
@@ -135,6 +123,19 @@ app.enableAuth();
  *
  * (only if this module is the main module)
  */
+
+// Import the models used in this app
+require("./models/categories");
+require("./models/products");
+
+// Init the CMS
+var cms = require("lb_cms");
+cms.init(app, loopback, {
+	title: "Loopback CMS",
+	viewsOverride: __dirname + "/views/administrator",
+	templateOverride: __dirname + "/public",
+	ignoreModels: ["accessToken", "email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
+});
 
 app.start = function () {
 	return app.listen(function () {

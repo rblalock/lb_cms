@@ -1,38 +1,40 @@
-var loopback = require("loopback");
-var ds = loopback.createDataSource("memory");
+var app = require("../app");
+var ds = app.dataSources.db;
 
-var Product = ds.createModel("product", {
+var Model = ds.createModel("product", {
 	id: {
 		type: Number,
 		id: true,
-		cms: {
-			fieldType: "Textfield"
-		}
+		cms: { fieldType: "Textfield" }
 	},
 	name: {
 		type: String,
-		cms: {
-			fieldType: "Textfield"
-		}
+		cms: { fieldType: "Textfield" }
 	},
 	description: {
 		type: String,
-		cms: {
-			fieldType: "Textarea"
-		}
+		cms: { fieldType: "Textarea" }
 	},
 	type: {
 		type: String,
-		cms: {
-			fieldType: "Select",
-			selectOptions: ["Beverage", "Torta", "Dessert"]
-		}
+		cms: { fieldType: "Select", selectOptions: ["Beverage", "Torta", "Dessert"] }
+	},
+	categoryId: {
+		type: Number,
+		cms: { fieldType: "Relation", reference: "name" }
 	}
 });
 
+Model.belongsTo(app.models.category.modelName, {
+	as: "category",
+	foreignKey: "categoryId"
+});
+
+app.model( Model );
+
 // Dummy Data
-Product.create([
-	{ name: "1 Some Product", description: "product description here", type: "Beverage" },
+Model.create([
+	{ name: "1 Some Product", description: "product description here", type: "Beverage", categoryId: 1 },
 	{ name: "2 Some Other Product", description: "product description here", type: "Dessert" },
 	{ name: "3 Some Really Other Product", description: "product description here", type: "Torta" },
 	{ name: "4 Some Really Other Product", description: "product description here", type: "Torta" },
@@ -122,5 +124,3 @@ Product.create([
 	{ name: "Some Really Other Product", description: "product description here", type: "Torta" },
 	{ name: "Some Really Other Product", description: "product description here", type: "Torta" }
 ]);
-
-module.exports = Product;

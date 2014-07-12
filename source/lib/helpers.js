@@ -43,5 +43,48 @@ module.exports = {
 		}
 
 		return fields;
+	},
+	/**
+	 * Handles swapping out the relational data with relevant info
+	 * @param {Object} _model
+	 * @param {Array} _data
+	 * @param {Boolean} _reference Whether to just return the value from the reference property
+	 * @return {Array}
+	 */
+	handleRelationFields: function(_model, _data, _reference) {
+		var relations = _model.relations;
+		var data = [];
+
+		_data.forEach(function(_row) {
+			var row = {};
+
+			for(var rowProp in _row) {
+				var flag;
+
+				for(var prop in relations) {
+					if(_row[relations[prop].keyFrom] !== undefined) {
+						var relationObject = _row[relations[prop].name]();
+						var schema = _model.definition.properties[relations[prop].keyFrom];
+
+						if(_reference && schema.cms.reference) {
+							relationObject = relationObject[schema.cms.reference];
+						} else if(_reference) {
+							relationObject = _row[relations[prop].keyFrom];
+						}
+
+						row[relations[prop].keyFrom] = relationObject;
+						flag = relations[prop].keyFrom;
+					}
+				}
+				
+				if(rowProp !== flag) {
+					row[rowProp] = _row[rowProp];
+				}
+			}
+
+			data.push(row);
+		});
+
+		return data;
 	}
 };
