@@ -1,0 +1,164 @@
+<% include partials/header.ejs %>
+<% include partials/navbar.ejs %>
+<% include partials/sidebar.ejs %>
+
+<aside class="right-side">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<div class="pull-right">
+			<a href="/administrator/detail?model=<%= modelName %>" class="btn btn-default" role="button">New</a>
+		</div>
+
+		<h1><%= modelName %></h1>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="btn-group pull-right">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				Export
+				<span class="caret"></span>
+			</button>
+			<ul id="export" class="dropdown-menu" role="menu">
+				<li><a>csv</a></li>
+				<li><a>xml</a></li>
+				<li><a>txt</a></li>
+				<li><a>json</a></li>
+				<li><a>sql</a></li>
+			</ul>
+		</div>
+
+		<div role="form" id="toolbar" class="form-inline">
+			<div class="input-group">
+				<input value="<%= filters.text %>" name="search" type="search" class="form-control" id="search"
+				       placeholder="Search...">
+
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+					        tabindex="-1">
+						<span class="caret"></span>
+						<span id="filterTitle"><%= filters.key  %></span>
+					</button>
+					<ul id="searchFilter" class="dropdown-menu dropdown-menu-right" role="menu">
+						<% for(var i = 0; i < headers.length; i++) { %>
+						<li><a><%= headers[i] %></a></li>
+						<% } %>
+					</ul>
+				</div>
+			</div>
+
+			<input name="searchFilterValue" type="hidden" id="searchFilterValue" value="<%= filters.key %>"/>
+
+			<button id="searchSubmit" type="submit" class="btn btn-default">Search</button>
+			<a class="btn" href="/administrator/list?model=<%= modelName %>">reset</a>
+		</div>
+
+		<hr/>
+
+		<table id="dataGrid" class="table table-hover table-striped">
+			<thead>
+			<tr>
+				<% for(var i = 0; i < headers.length; i++) { %>
+				<th data-sortable="true" data-field="<%= headers[i] %>"><%= headers[i] %></th>
+				<% } %>
+			</tr>
+			</thead>
+		</table>
+	</section>
+	<!-- /.content -->
+</aside>
+
+<% include partials/footer.ejs %>
+<% include partials/scripts.ejs %>
+
+<script type="text/javascript" src="/template/administrator/js/tableExport.js"></script>
+<script type="text/javascript" src="/template/administrator/js/jquery.base64.js"></script>
+<script type="text/javascript" src="/template/administrator/js/bootstrap-table.js"></script>
+
+<script type="application/javascript">
+	$(document).ready(function () {
+
+		// Handle search and filter dropdowns
+		$("#searchFilter li").on("click", function () {
+			var text = $(this).text();
+			$("#filterTitle").text(text);
+			$("#searchFilterValue").attr("value", text);
+		});
+
+		// Handle the table
+		var sortName, sortOrder;
+
+		$("#dataGrid").bootstrapTable({
+			method: "get",
+			url: "/administrator/list?model=<%= modelName %>&format=json",
+			striped: true,
+			pagination: true,
+			sidePagination: "server",
+			pageList: [10, 25, 50, 100],
+			pageSize: 10,
+			search: false,
+			showColumns: true,
+			onSort: function (name, order) {
+				sortName = name;
+				sortOrder = order;
+			},
+			onClickRow: function (row) {
+				window.location = "/administrator/detail?model=<%= modelName %>&id=" + row.id;
+			},
+			queryParams: function (pageSize, pageNumber, search) {
+				return {
+					limit: pageSize,
+					skip: pageSize * (pageNumber - 1),
+					sortName: sortName,
+					sortOrder: sortOrder
+				};
+			}
+		});
+
+		// Submit search
+		$("#searchSubmit").click(function () {
+			var searchTerm = $("#search").val();
+			var searchFilter = $("#filterTitle").text();
+
+			$("#dataGrid").bootstrapTable("destroy");
+			$("#dataGrid").bootstrapTable({
+				method: "get",
+				url: "/administrator/list?format=json&model=<%= modelName %>&search=" + searchTerm + "&searchFilterValue=" + searchFilter,
+				striped: true,
+				pagination: true,
+				sidePagination: "server",
+				pageList: [10, 25, 50, 100],
+				pageSize: 10,
+				search: false,
+				showColumns: true,
+				onClickRow: function (row) {
+					window.location = "/administrator/detail?model=<%= modelName %>&id=" + row.id;
+				},
+				onSort: function (name, order) {
+					sortName = name;
+					sortOrder = order;
+				},
+				queryParams: function (pageSize, pageNumber, search) {
+					return {
+						limit: pageSize,
+						skip: pageSize * (pageNumber - 1),
+						sortName: sortName,
+						sortOrder: sortOrder
+					};
+				}
+			});
+		});
+
+		// Handle export
+		$("#export li").on("click", function () {
+			var text = $(this).text();
+			$("#dataGrid").tableExport({
+				type: text,
+				escape: true
+			});
+		});
+
+	});
+</script>
+
+<% include partials/end.ejs %>

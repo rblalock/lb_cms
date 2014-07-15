@@ -1,0 +1,30 @@
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="left-side sidebar-offcanvas">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="/administrator">
+                        <i class="fa fa-dashboard"></i> <span>Home</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-th"></i>
+	                    <span>Models</span>
+	                    <small class="badge pull-right bg-black"><%= modelsMenu.length %></small>
+                    </a>
+	                <ul class="treeview-menu">
+		                <% for(var i = 0; i < modelsMenu.length; i++) { %>
+		                	<a class="list-group-item" href="/administrator/list?model=<%= modelsMenu[i] %>">
+				                <%= modelsMenu[i] %>
+			                </a>
+		                <% } %>
+	                </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>

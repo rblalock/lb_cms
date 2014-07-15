@@ -79,6 +79,22 @@ module.exports = {
 	 */
 	Relation: function(_name, _value, _properties) {
 		// TODO
+//		var select = '<select name="' + _name + '" id="' + _name + '" class="form-control">';
+//
+//		if(_properties.cms.selectOptions) {
+//			_properties.cms.selectOptions.forEach(function(_option) {
+//				var selected = "";
+//
+//				if(_value === _option) {
+//					selected = 'selected="selected"';
+//				}
+//
+//				select += '<option ' + selected + '>' + _option + '</option>';
+//			});
+//		}
+//
+//		select += '</select>';
+
 		return {
 			key: _name,
 			html: "<p>TODO</p>"

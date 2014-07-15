@@ -1,0 +1,61 @@
+<% include partials/header.ejs %>
+<% include partials/navbar.ejs %>
+<% include partials/sidebar.ejs %>
+
+<aside class="right-side">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<div class="pull-right">
+			<a href="/administrator/detail?model=<%= modelName %>" class="btn btn-default" role="button">New</a>
+		</div>
+
+		<h1><a href="/administrator/list?model=<%= modelName %>"><%= !data ? "New" : "" %> <%= modelName %></a> <small><%= data ? data[idField] : "" %></small></h1>
+	</section>
+
+	<section class="content">
+		<% if(success === "true") { %>
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<strong>Success!</strong> Your updates were saved.
+		</div>
+		<% } %>
+
+		<% if(success === "false") { %>
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<strong>Error:</strong> Something went wrong with your request
+		</div>
+		<% } %>
+
+		<form class="form-horizontal" role="form" action="/administrator/detail?model=<%= modelName %>&id=<%= id ? id : null %>" method="post">
+			<% for(var i = 0; i < headers.length; i++) { %>
+				<% if(fields[i].key !== "id") { %>
+				<div class="form-group">
+					<label class="col-sm-2" for="<%= headers[i] %>"><%= fields[i].key %></label>
+
+					<div class="col-sm-10">
+						<%- fields[i].html %>
+					</div>
+				</div>
+				<% } %>
+			<% } %>
+
+			<hr />
+
+			<button type="submit" class="btn btn-lg btn-primary">Save</button>
+
+			<% if(data) { %>
+			<a href="/administrator/detail?action=delete&model=<%= modelName %>&id=<%= id %>" class="btn btn-lg pull-right btn-danger" role="button">Delete</a>
+			<% } %>
+		</form>
+	</section>
+
+</aside>
+
+<% include partials/footer.ejs %>
+<% include partials/scripts.ejs %>
+<% include partials/end.ejs %>

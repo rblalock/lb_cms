@@ -52,7 +52,7 @@ module.exports = function() {
 							modelsMenu: modelsMenu,
 							filters: {
 								key: _req.query.searchFilterValue || headers[0],
-								text: _req.body.search ||  ""
+								text: _req.query.search ||  ""
 							}
 						});
 					}

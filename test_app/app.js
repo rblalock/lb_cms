@@ -47,9 +47,9 @@ try {
 //		console.log('Browse your REST API at %s%s', baseUrl, explorer.route);
 	});
 } catch (e) {
-	console.log(
-		'Run `npm install loopback-explorer` to enable the LoopBack explorer'
-	);
+//	console.log(
+//		'Run `npm install loopback-explorer` to enable the LoopBack explorer'
+//	);
 }
 
 /*
@@ -131,8 +131,8 @@ require("./models/products");
 // Init the CMS
 var cms = require("lb_cms");
 cms.init(app, loopback, {
-	title: "Loopback CMS",
-	viewsOverride: __dirname + "/views/administrator",
+	title: "Data Management",
+	viewsOverride: __dirname + "/views/adminlte",
 	templateOverride: __dirname + "/public",
 	ignoreModels: ["accessToken", "email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
 });

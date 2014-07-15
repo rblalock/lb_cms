@@ -1,6 +1,12 @@
 var fs = require("fs");
 var wrench = require("wrench");
 
+function moveFilesToSampleProject() {
+	wrench.copyDirSyncRecursive("source", "test_app/node_modules/lb_cms", {
+		forceDelete: true
+	});
+}
+
 module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
@@ -14,18 +20,18 @@ module.exports = function (grunt) {
 		}
 	});
 
+	grunt.registerTask("default", function () {
+		moveFilesToSampleProject();
+	});
+
 	grunt.registerTask("sampleapp", function () {
-		wrench.copyDirSyncRecursive("source", "test_app/node_modules/lb_cms", {
-			forceDelete: true
-		});
+		moveFilesToSampleProject();
 
 		grunt.task.run("shell");
 	});
 
 	grunt.registerTask("mocha", function () {
-		wrench.copyDirSyncRecursive("source", "test_app/node_modules/lb_cms", {
-			forceDelete: true
-		});
+		moveFilesToSampleProject();
 
 		grunt.task.run("shell:test");
 	});
