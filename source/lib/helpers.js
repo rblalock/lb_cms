@@ -45,6 +45,31 @@ module.exports = {
 		return fields;
 	},
 	/**
+	 * Handle header fields default vs. user defined
+	 * @param {Object} _model
+	 * @return {Array}
+	 */
+	defineHeaderFields: function(_model) {
+		var fields = _model.definition.properties;
+		var headers = [];
+
+		for(var prop in fields) {
+			if(fields[prop].cms && fields[prop].cms.readableName) {
+				headers.push({
+					key: prop,
+					value: fields[prop].cms.readableName
+				});
+			} else {
+				headers.push({
+					key: prop,
+					value: prop
+				});
+			}
+		}
+		
+		return headers;
+	},
+	/**
 	 * Handles swapping out the relational data with relevant info
 	 * @param {Object} _model
 	 * @param {Array} _data

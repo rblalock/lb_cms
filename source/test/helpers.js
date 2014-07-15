@@ -69,4 +69,11 @@ describe("helpers.js", function () {
 		data[0].categoryId.should.be.an.Object;
 		data[0].categoryId.should.have.properties("id", "name");
 	});
+
+	it("Should define the header fields by their key and user defined values", function () {
+		var headers = helpers.defineHeaderFields(testModel);
+		
+		headers[0].should.be.an.Object;
+		headers[0].should.have.properties("key", "value");
+	});
 });

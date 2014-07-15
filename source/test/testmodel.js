@@ -7,7 +7,7 @@ var TestModel = ds.createModel("testproduct", {
 	name: { type: String, cms: { fieldType: "Textfield" } },
 	description: { type: String, cms: { fieldType: "Textarea" } },
 	type: { type: String, cms: { fieldType: "Select", selectOptions: ["Beverage", "Torta", "Dessert"] } },
-	categoryId: { type: Number, cms: { fieldType: "Relation", reference: "name" } }
+	categoryId: { type: Number, cms: { fieldType: "Relation", reference: "name", readableName: "category" } }
 });
 
 TestModel.belongsTo(app.models.category.modelName, {

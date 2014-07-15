@@ -34,7 +34,7 @@ module.exports = function() {
 			CMS.App.models[_req.query.model].count(query.list(_req).where, function(_countErr, _countData) {
 				CMS.App.models[_req.query.model].find(query.list(_req), function(_err, _data) {
 					var idField = helpers.determineIdField(_req.query.model);
-					var headers = Object.keys(CMS.App.models[_req.query.model].definition.properties);
+					var headers = helpers.defineHeaderFields(CMS.App.models[_req.query.model], _data);
 					_data = helpers.handleRelationFields(CMS.App.models[_req.query.model], _data, true);
 					
 					if(_req.query.format === "json") {
@@ -51,7 +51,7 @@ module.exports = function() {
 							idField: idField,
 							modelsMenu: modelsMenu,
 							filters: {
-								key: _req.query.searchFilterValue || headers[0],
+								key: _req.query.searchFilterValue || headers[0].key,
 								text: _req.query.search ||  ""
 							}
 						});

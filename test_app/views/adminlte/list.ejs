@@ -41,7 +41,7 @@
 					</button>
 					<ul id="searchFilter" class="dropdown-menu dropdown-menu-right" role="menu">
 						<% for(var i = 0; i < headers.length; i++) { %>
-						<li><a><%= headers[i] %></a></li>
+						<li><a><%= headers[i].key %></a></li>
 						<% } %>
 					</ul>
 				</div>
@@ -59,7 +59,7 @@
 			<thead>
 			<tr>
 				<% for(var i = 0; i < headers.length; i++) { %>
-				<th data-sortable="true" data-field="<%= headers[i] %>"><%= headers[i] %></th>
+				<th data-sortable="true" data-field="<%= headers[i].key %>"><%= headers[i].value %></th>
 				<% } %>
 			</tr>
 			</thead>

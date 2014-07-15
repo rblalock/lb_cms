@@ -21,7 +21,7 @@ var Model = ds.createModel("product", {
 	},
 	categoryId: {
 		type: Number,
-		cms: { fieldType: "Relation", reference: "name" }
+		cms: { fieldType: "Relation", reference: "name", readableName: "category" }
 	}
 });
 
