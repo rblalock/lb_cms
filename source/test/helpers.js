@@ -26,7 +26,7 @@ describe("helpers.js", function () {
 			if(_err) {
 				throw Error(_err);
 			} else {
-				var fields = helpers.renderFields(_data, testModel.definition.properties);
+				var fields = helpers.renderFields(_data, testModel.definition.properties, testModel);
 
 				fields.should.be.an.Array;
 				fields[0].should.have.properties("key", "html");
@@ -75,5 +75,12 @@ describe("helpers.js", function () {
 		
 		headers[0].should.be.an.Object;
 		headers[0].should.have.properties("key", "value");
+	});
+
+	it("Should grab any fields with a special reference / alias", function () {
+		var references = helpers.defineReferenceFields(testModel);
+
+		references.should.have.properties("categoryId");
+		references.categoryId.should.be.equal("name");
 	});
 });

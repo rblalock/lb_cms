@@ -46,6 +46,23 @@ module.exports = {
 		return fields;
 	},
 	/**
+	 * Find and return reference fields
+	 * @param {Object} _model Loopback model
+	 * @return {Object}
+	 */
+	defineReferenceFields: function(_model) {
+		var references = {};
+		var modelSchema = _model.definition.properties;
+
+		for (modelProps in modelSchema) {
+			if (modelSchema[modelProps].cms.reference) {
+				references[modelProps] = modelSchema[modelProps].cms.reference;
+			}
+		}
+
+		return references;
+	},
+	/**
 	 * Handle header fields default vs. user defined
 	 * @param {Object} _model
 	 * @return {Array}

@@ -35,19 +35,10 @@ module.exports = function() {
 				CMS.App.models[_req.query.model].find(query.list(_req), function(_err, _data) {
 					var idField = helpers.determineIdField(_req.query.model);
 					var headers = helpers.defineHeaderFields(CMS.App.models[_req.query.model]);
+					var references = helpers.defineReferenceFields(CMS.App.models[_req.query.model])
 					_data = helpers.handleRelationFields(CMS.App.models[_req.query.model], _data, true);
 
 					if(_req.query.format === "json") {
-						var references = {};
-						var modelSchema = CMS.App.models[_req.query.model].definition.properties;
-
-						for(modelProps in modelSchema) {
-							console.log(modelSchema[modelProps]);
-							if(modelSchema[modelProps].cms.reference) {
-								references[modelProps] = modelSchema[modelProps].cms.reference;
-							}
-						}
-
 						_res.send({
 							total: _countData,
 							references: references,
