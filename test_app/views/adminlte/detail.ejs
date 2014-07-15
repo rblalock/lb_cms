@@ -35,7 +35,7 @@
 			<% for(var i = 0; i < headers.length; i++) { %>
 				<% if(fields[i].key !== "id") { %>
 				<div class="form-group">
-					<label class="col-sm-2" for="<%= headers[i].key %>"><%= fields[i].key %></label>
+					<label class="col-sm-2" for="<%= headers[i].key %>"><%= headers[i].value %></label>
 
 					<div class="col-sm-10">
 						<%- fields[i].html %>
@@ -59,4 +59,40 @@
 
 <% include partials/footer.ejs %>
 <% include partials/scripts.ejs %>
+
+<script type="application/javascript">
+	// Handle relational fields
+	$('select[data-model-name]').each(function(_select) {
+		var that = this;
+		var modelName = $(this).attr("data-model-name");
+		var currentSelection = $(this).val();
+
+		if(modelName) {
+			$.ajax({
+				url: "/administrator/list?model=" + modelName + "&format=json&limit50",
+				success: function(_data) {
+					$(that).find('option').remove().end();
+					
+					_data.rows.forEach(function(_row) {
+						var selected = (currentSelection == _row["<%= idField %>"]) ? "selected" : null;
+						var name = _row["<%= idField %>"];
+
+						for(var prop in _row) {
+							if(_data.references[prop]) {
+								name = _row[prop];
+							}
+						}
+
+						$(that).append(
+							$('<option ' + selected + '>' + name + '</option>')
+									.attr("value", _row["<%= idField %>"])
+						);
+					});
+				},
+				dataType: "json"
+			});
+		}
+	});
+</script>
+
 <% include partials/end.ejs %>

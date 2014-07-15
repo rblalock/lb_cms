@@ -12,7 +12,7 @@ var Model = ds.createModel("category", {
 	name: {
 		type: String,
 		cms: {
-			fieldType: "Textfield"
+			fieldType: "Textfield", reference: "name"
 		}
 	}
 });

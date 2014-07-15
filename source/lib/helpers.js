@@ -24,11 +24,12 @@ module.exports = {
 	},
 	/**
 	 * Render fields for data set
-	 * @param {Array} _data
+	 * @param {Object} _data
 	 * @param {Object} _properties
+	 * @param {Object} _model
 	 * @return {Array}
 	 */
-	renderFields: function (_data, _properties) {
+	renderFields: function (_data, _properties, _model) {
 		var fields = [];
 		_data = _data || {};
 
@@ -37,7 +38,7 @@ module.exports = {
 
 			if (obj.cms.fieldType) {
 				fields.push(
-					CMS.FieldGenerator[obj.cms.fieldType](prop, _data[prop] || null, _properties[prop])
+					CMS.FieldGenerator[obj.cms.fieldType](prop, _data[prop] || null, _properties[prop], _model)
 				);
 			}
 		}

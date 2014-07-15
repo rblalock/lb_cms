@@ -26,7 +26,7 @@ var CMS = {
 	 * The field generator module.  This is exposed here so it can be overwritten by the developer.
 	 * @type {Object}
 	 */
-	FieldGenerator: require("./lib/fields"),
+	FieldGenerator: {},
 	/**
 	 * Inits the app
 	 * @param {Object} _app The express app instance
@@ -43,6 +43,7 @@ var CMS = {
 		// Setup the singleton
 		CMS.App = _app;
 		CMS.Loopback = _loopback;
+		CMS.FieldGenerator = require("./lib/fields");
 		CMS.params = _params;
 
 		// Setup up the body parser TODO should this be optional or let user define?
