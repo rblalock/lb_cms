@@ -8,7 +8,8 @@
     "body-parser": "~1.4.3",
     "mocha": "~1.20.1",
     "should": "~4.0.4",
-    "supertest": "~0.13.0"
+    "supertest": "~0.13.0",
+    "lodash": "~2.4.1"
   },
   "author": {
     "name": "Rick Blalock"
