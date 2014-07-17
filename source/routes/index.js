@@ -111,7 +111,7 @@ module.exports = function() {
 			if(_req.query.id !== "null") { // <-- ewww
 				_req.body[idField] = _req.query.id;
 			}
-
+			
 			// Update and redirect to the detail screen again
 			CMS.App.models[_req.query.model].upsert(_req.body, function(_err, _data) {
 				var query = (_req.query.id === "null") ? "&id=" + _data[idField] : "";

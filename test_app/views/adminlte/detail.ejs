@@ -57,6 +57,17 @@
 <% include partials/scripts.ejs %>
 
 <script type="application/javascript">
+	// Handle selecting checkboxes
+	$('input[data-type=bool]').change(function () {
+		if ($(this).is(":checked")) {
+			$('input[name=' + $(this).attr("data-name") + ']').attr("value", 1);
+			$(this).attr("value", true);
+		} else {
+			$('input[name=' + $(this).attr("data-name") + ']').attr("value", null);
+			$(this).attr("value", false);
+		}
+	});
+
 	// Handle relational fields
 	$('select[data-model-name]').each(function(_select) {
 		var that = this;

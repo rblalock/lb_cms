@@ -35,12 +35,24 @@ module.exports = {
 
 		for (var prop in _properties) {
 			var obj = _properties[prop];
+			var fieldType, field;
 
-			if (obj.cms.fieldType) {
-				fields.push(
-					CMS.FieldGenerator[obj.cms.fieldType](prop, _data[prop] || null, _properties[prop], _model)
-				);
+			// TODO for maintenance this will probably need to be abstracted out.  I imagine
+			// we'll need to start using this check a lot when it comes to CRUD operations...
+			// unless LB does the checks for us already - need to investigate.
+			if (obj.cms && obj.cms.fieldType) {
+				fieldType = obj.cms.fieldType;
+			} else {
+				fieldType = (typeof obj.type === "function") ? typeof obj.type() : typeof obj.type;
 			}
+			
+			if(CMS.FieldGenerator[fieldType]) {
+				field = CMS.FieldGenerator[fieldType](prop, _data[prop] || null, _properties[prop], _model);
+			} else {
+				field = CMS.FieldGenerator.Textarea(prop, _data[prop] || null, _properties[prop], _model);
+			}
+			
+			fields.push(field);
 		}
 
 		return fields;
@@ -55,7 +67,7 @@ module.exports = {
 		var modelSchema = _model.definition.properties;
 
 		for (modelProps in modelSchema) {
-			if (modelSchema[modelProps].cms.reference) {
+			if (modelSchema[modelProps].cms && modelSchema[modelProps].cms.reference) {
 				references[modelProps] = modelSchema[modelProps].cms.reference;
 			}
 		}
@@ -109,7 +121,7 @@ module.exports = {
 						var relationObject = _row[relations[prop].name]();
 						var schema = _model.definition.properties[relations[prop].keyFrom];
 
-						if(_reference && schema.cms.reference) {
+						if(_reference && schema.cms && schema.cms.reference) {
 							relationObject = relationObject[schema.cms.reference];
 						} else if(_reference) {
 							relationObject = _row[relations[prop].keyFrom];

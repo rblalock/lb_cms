@@ -4,7 +4,7 @@
 
 var CMS = require("../");
 
-module.exports = {
+var Fields = {
 	/**
 	 * Textfield component
 	 * @param {String} _name The key / name of the field
@@ -43,6 +43,29 @@ module.exports = {
 						'class="form-control" ' +
 						'id="' + _name + '" ' +
 						'placeholder="Enter ' + _name + '">' + _value + '</textarea>'
+		};
+	},
+	/**
+	 * Single Checkbox component
+	 * @param {String} _name The key / name of the field
+	 * @param {String} _value The value to set for this component
+	 * @param {Object} _properties The field schema properties
+	 * @param {Object} _model Loopback model
+	 * @return {String} Returns the html field template
+	 */
+	Checkbox: function(_name, _value, _properties, _model) {
+		_value = _value || "";
+		var checked = (_value) ? "checked" : "";
+
+		return {
+			key: _name,
+			html: '<input type="hidden" name="' + _name + '" value="' + _value + '" />' +
+				'<input data-type="bool" data-name="' + _name + '" ' + checked + ' ' +
+						'type="checkbox" ' +
+						'class="form-control" ' +
+						'id="' + _name + '" ' +
+						'placeholder="Enter ' + _name + '" ' +
+						'value="' + _value + '">'
 		};
 	},
 	/**
@@ -113,3 +136,10 @@ module.exports = {
 		};
 	}
 };
+
+// Assign default fields based on standard types
+Fields.number = Fields.Textfield;
+Fields.string = Fields.Textfield;
+Fields.boolean = Fields.Checkbox;
+
+module.exports = Fields;

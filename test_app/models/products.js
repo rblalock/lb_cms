@@ -22,6 +22,10 @@ var Model = ds.createModel("product", {
 	categoryId: {
 		type: Number,
 		cms: { fieldType: "Relation", reference: "name", readableName: "category" }
+	},
+	boolTest: {
+		type: Boolean,
+		cms: { fieldType: "Checkbox" }
 	}
 });
 
