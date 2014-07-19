@@ -137,7 +137,7 @@ var Fields = {
 	}
 };
 
-// Assign default fields based on standard types
+// Assign default fields based on standard JS types
 Fields.number = Fields.Textfield;
 Fields.string = Fields.Textfield;
 Fields.boolean = Fields.Checkbox;

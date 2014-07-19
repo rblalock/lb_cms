@@ -16,10 +16,26 @@ CMS.App.models().forEach(function(_model) {
 });
 
 module.exports = function() {
+	// Token check middleware
+	function tokenCheck(_req, _res, next) {
+		// TODO how does LB handle expired tokens?  Null the object out?  Place something inside?
+		// Also any convenience methods for checking for stale tokens and such?
+		if(!_req.cookies.accessToken) {
+			_res.render("login");
+		} else {
+			next();
+		}
+	}
+
+	CMS.App.get("*", function(_req, _res, next) {
+		console.log(_req.cookies);
+		next();
+	});
+	
 	/**
 	 * The main admin home screen
 	 */
-	CMS.App.get("/administrator", function(_req, _res) {
+	CMS.App.get("/administrator", tokenCheck, function(_req, _res) {
 		_res.render("home", {
 			title: CMS.params.title,
 			modelsMenu: modelsMenu
@@ -27,15 +43,37 @@ module.exports = function() {
 	});
 
 	/**
+	 * The login screen
+	 */
+	CMS.App.get("/login", tokenCheck, function(_req, _res) {
+		_res.render("login");
+	});
+
+	CMS.App.post("/login", function(_req, _res) {
+		CMS.App.models.user.login({
+			email: _req.body.userid,
+			username: _req.body.userid,
+			password: _req.body.password
+		}, function(err, accessToken) {
+			if(accessToken) {
+				_res.cookie("accessToken", accessToken);
+				_res.redirect("/administrator");
+			} else {
+				_res.render("login");
+			}
+		});
+	});
+
+	/**
 	 * The model list screen
 	 */
-	CMS.App.get("/administrator/list", function(_req, _res) {
+	CMS.App.get("/administrator/list", tokenCheck, function(_req, _res) {
 		if(CMS.App.models[_req.query.model]) {
 			CMS.App.models[_req.query.model].count(query.list(_req).where, function(_countErr, _countData) {
 				CMS.App.models[_req.query.model].find(query.list(_req), function(_err, _data) {
 					var idField = helpers.determineIdField(_req.query.model);
 					var headers = helpers.defineHeaderFields(CMS.App.models[_req.query.model]);
-					var references = helpers.defineReferenceFields(CMS.App.models[_req.query.model])
+					var references = helpers.defineReferenceFields(CMS.App.models[_req.query.model]);
 					_data = helpers.handleRelationFields(CMS.App.models[_req.query.model], _data, true);
 
 					if(_req.query.format === "json") {
@@ -66,7 +104,7 @@ module.exports = function() {
 	/**
 	 * The model record detail screen
 	 */
-	CMS.App.get("/administrator/detail", function(_req, _res) {
+	CMS.App.get("/administrator/detail", tokenCheck, function(_req, _res) {
 		if(CMS.App.models[_req.query.model]) {
 			// Handle the delete action
 			if(_req.query.action && _req.query.action === "delete") {
@@ -104,7 +142,7 @@ module.exports = function() {
 	/**
 	 * The model record post
 	 */
-	CMS.App.post("/administrator/detail", function(_req, _res) {
+	CMS.App.post("/administrator/detail", tokenCheck, function(_req, _res) {
 		if(CMS.App.models[_req.query.model]) {
 			var idField = helpers.determineIdField(_req.query.model);
 			

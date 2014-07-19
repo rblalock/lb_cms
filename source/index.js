@@ -1,6 +1,7 @@
 var fs = require("fs");
 var path = require("path");
 var bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
 
 /**
  * The CMS singleton
@@ -45,6 +46,14 @@ var CMS = {
 		CMS.Loopback = _loopback;
 		CMS.FieldGenerator = require("./lib/fields");
 		CMS.params = _params;
+
+		// Setup CMS token checks
+		CMS.App.use(CMS.Loopback.token({
+			cookies: ["cms-auth"],
+			headers: ["cms-auth", "x-cms-auth"],
+			params: ["cms-auth"]
+		}));
+		CMS.App.use(cookieParser());
 
 		// Setup up the body parser TODO should this be optional or let user define?
 		CMS.App.use(bodyParser.urlencoded({

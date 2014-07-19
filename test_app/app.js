@@ -128,6 +128,14 @@ app.enableAuth();
 require("./models/categories");
 require("./models/products");
 
+// Create sample user for tests
+app.enableAuth();
+
+var User = app.models.user;
+User.create({ email: 'foo@bar.com', password: 'bar' }, function (err, user) {
+	console.log(user);
+});
+
 // Init the CMS
 var cms = require("lb_cms");
 cms.init(app, loopback, {

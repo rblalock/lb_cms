@@ -4,12 +4,14 @@
   "description": "CMS for StrongLoop",
   "main": "index.js",
   "dependencies": {
-    "underscore": "*",
     "body-parser": "~1.4.3",
+    "cookie-parser": "^1.3.2",
+    "express-session": "^1.6.5",
+    "lodash": "~2.4.1",
     "mocha": "~1.20.1",
     "should": "~4.0.4",
     "supertest": "~0.13.0",
-    "lodash": "~2.4.1"
+    "underscore": "*"
   },
   "author": {
     "name": "Rick Blalock"
