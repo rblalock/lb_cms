@@ -131,8 +131,9 @@ require("./models/products");
 // Create sample user for tests
 app.enableAuth();
 
+// Setup a sample user for us to use in the admin
 var User = app.models.user;
-User.create({ email: 'foo@bar.com', password: 'bar' }, function (err, user) {
+User.create({ email: "foo@bar.com", password: "bar" }, function (err, user) {
 	console.log(user);
 });
 
@@ -142,7 +143,7 @@ cms.init(app, loopback, {
 	title: "Data Management",
 	viewsOverride: __dirname + "/views/adminlte",
 	templateOverride: __dirname + "/public",
-	ignoreModels: ["accessToken", "email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
+	ignoreModels: ["email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
 });
 
 app.start = function () {

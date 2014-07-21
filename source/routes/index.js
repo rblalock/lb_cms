@@ -18,19 +18,29 @@ CMS.App.models().forEach(function(_model) {
 module.exports = function() {
 	// Token check middleware
 	function tokenCheck(_req, _res, next) {
+		// WHY DON'T THESE WORK?!
+		if(_req.signedCookies.access_token) {
+			CMS.App.models.accessToken.findForRequest(_req, {}, function(_err, _token) {
+				console.log(_token);
+			});
+		}
+
+		CMS.App.models.accessToken.validate(function(_err, _isValid) {
+			console.log(_err, _isValid);
+		});
+		
 		// TODO how does LB handle expired tokens?  Null the object out?  Place something inside?
 		// Also any convenience methods for checking for stale tokens and such?
-		if(!_req.cookies.accessToken) {
+		// HOW DO WE CHECK IF VALID USER?!  None of the above methods work!
+		var isLoggedIn = true;
+
+		if(!isLoggedIn) {
+			// TODO Should render JSON or the login screen depending on request
 			_res.render("login");
 		} else {
 			next();
 		}
 	}
-
-	CMS.App.get("*", function(_req, _res, next) {
-		console.log(_req.cookies);
-		next();
-	});
 	
 	/**
 	 * The main admin home screen
@@ -56,11 +66,23 @@ module.exports = function() {
 			password: _req.body.password
 		}, function(err, accessToken) {
 			if(accessToken) {
-				_res.cookie("accessToken", accessToken);
+				_res.cookie("access_token", accessToken, { signed: true });
 				_res.redirect("/administrator");
 			} else {
 				_res.render("login");
 			}
+		});
+	});
+
+	/**
+	 * Logout routine
+	 */
+	CMS.App.get("/logout", function(_req, _res) {
+		CMS.App.models.user.logout(_req.signedCookies.access_token, function (err) {
+			console.log(err);
+
+			_res.clearCookie("access_token");
+			_res.render("login");
 		});
 	});
 
