@@ -116,6 +116,7 @@ if (swaggerRemote) {
 	swaggerRemote.requireToken = false;
 }
 
+app.use(loopback.token({model: app.models.accessToken}));
 app.enableAuth();
 
 /*
