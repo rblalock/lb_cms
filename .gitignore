@@ -2,3 +2,4 @@
 /.idea/
 node_modules/
 .DS_Store
+test_app/npm-debug.log

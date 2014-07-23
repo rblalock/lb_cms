@@ -21,10 +21,10 @@ module.exports = function() {
 		// WHY DON'T THESE WORK?!
 		if(_req.signedCookies.access_token) {
 			CMS.App.models.accessToken.findForRequest(_req, {}, function(_err, _token) {
-				console.log(_token);
+//				console.log(_token);
 			});
 		}
-
+		
 		CMS.App.models.accessToken.validate(function(_err, _isValid) {
 			console.log(_err, _isValid);
 		});
