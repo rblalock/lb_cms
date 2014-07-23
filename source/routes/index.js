@@ -18,27 +18,27 @@ CMS.App.models().forEach(function(_model) {
 module.exports = function() {
 	// Token check middleware
 	function tokenCheck(_req, _res, next) {
+		var TokenModel = CMS.Loopback.getModelByType(CMS.Loopback.AccessToken);
+		
 		// WHY DON'T THESE WORK?!
-		if(_req.signedCookies.access_token) {
-			CMS.App.models.accessToken.findForRequest(_req, {}, function(_err, _token) {
-//				console.log(_token);
+		if(_req.signedCookies.access_token && _req.signedCookies.access_token.id) {
+			TokenModel.findOne({ id: _req.signedCookies.access_token.id }, function (err, token) {
+				if (err) {
+					_res.redirect("/login");
+				} else if (token) {
+					token.validate(function (err, isValid) {
+						if(isValid || !err) {
+							next();
+						} else {
+							_res.redirect("/login");
+						}
+					});
+				} else {
+					_res.redirect("/login");
+				}
 			});
-		}
-		
-		CMS.App.models.accessToken.validate(function(_err, _isValid) {
-			console.log(_err, _isValid);
-		});
-		
-		// TODO how does LB handle expired tokens?  Null the object out?  Place something inside?
-		// Also any convenience methods for checking for stale tokens and such?
-		// HOW DO WE CHECK IF VALID USER?!  None of the above methods work!
-		var isLoggedIn = true;
-
-		if(!isLoggedIn) {
-			// TODO Should render JSON or the login screen depending on request
-			_res.render("login");
 		} else {
-			next();
+			_res.redirect("/login");
 		}
 	}
 	
@@ -55,7 +55,7 @@ module.exports = function() {
 	/**
 	 * The login screen
 	 */
-	CMS.App.get("/login", tokenCheck, function(_req, _res) {
+	CMS.App.get("/login", function(_req, _res) {
 		_res.render("login");
 	});
 
