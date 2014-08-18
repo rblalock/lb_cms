@@ -60,16 +60,24 @@ var CMS = {
 		if(_params.viewsOverride) {
 			CMS.App.set("views", _params.viewsOverride);
 		} else {
-			CMS.App.set("views", __dirname + "/views");
+			CMS.App.set("views", __dirname + "/views/adminlte");
 		}
 
 		// Template files override
 		if(_params.templateOverride) {
 			CMS.App.use(CMS.Loopback.static(_params.templateOverride));
 		} else {
-			CMS.App.use(CMS.Loopback.static(path.join(__dirname, "public")));
-		}
+			// The static setting doesn't work in this case
+			// so I have to create the route below to serve up the admin UI files
+			// TODO look in to why this doesn't work.  It's odd the above line DOES work if its being
+			// overridden.
+			CMS.App.get("/template/*", function(_req, _res) {
+				_res.sendfile(__dirname + "/public/template/" + _req.route.params[0]);
+			});
 
+			// CMS.App.use(CMS.Loopback.static(__dirname + "/" + "public"));
+		}
+		
 		// Handle view engine override
 		if(_params.viewEngineOverride) {
 			CMS.App.set("view engine", _params.viewEngineOverride);

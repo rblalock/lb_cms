@@ -20,9 +20,10 @@ module.exports = function() {
 	function tokenCheck(_req, _res, next) {
 		var TokenModel = CMS.Loopback.getModelByType(CMS.Loopback.AccessToken);
 		
-		// WHY DON'T THESE WORK?!
 		if(_req.signedCookies.access_token && _req.signedCookies.access_token.id) {
 			TokenModel.findOne({ id: _req.signedCookies.access_token.id }, function (err, token) {
+
+				// TODO rewrite - must've been 2AM
 				if (err) {
 					_res.redirect("/login");
 				} else if (token) {
@@ -41,7 +42,7 @@ module.exports = function() {
 			_res.redirect("/login");
 		}
 	}
-	
+
 	/**
 	 * The main admin home screen
 	 */
@@ -69,6 +70,7 @@ module.exports = function() {
 				_res.cookie("access_token", accessToken, { signed: true });
 				_res.redirect("/administrator");
 			} else {
+				// TODO should pass error to the screen
 				_res.render("login");
 			}
 		});

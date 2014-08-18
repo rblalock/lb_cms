@@ -138,14 +138,13 @@ User.create({ email: "foo@bar.com", password: "bar" }, function (err, user) {
 	console.log(user);
 });
 
-// Init the CMS
+/***************** Init the CMS [This is what would be dropped in existing code] ****************/
 var cms = require("lb_cms");
 cms.init(app, loopback, {
 	title: "Data Management",
-	viewsOverride: __dirname + "/views/adminlte",
-	templateOverride: __dirname + "/public",
 	ignoreModels: ["email", "user", "application", "acl", "roleMapping", "role", "scope", "push", "installation", "notification"]
 });
+/*************************/
 
 app.start = function () {
 	app._didStart = true; // For mocha tests - very fancy stuff right here
