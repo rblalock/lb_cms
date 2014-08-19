@@ -1,6 +1,8 @@
 ## Data Editor / CMS for Loopback
 
-This **early alpha** provides the base for a CMS-like app built on [Loopback][1].  The concept is similar to some "scaffolding" apps available in other languages / frameworks or as a base CMS to built a user-centric data management product from.  This is a work in progress of course so things could change at any point.  I'm putting it out there right now for others to use and hopefully contribute.
+[Sample Video][1]
+
+This **early alpha** provides the base for a CMS-like app built on [Loopback][2].  The concept is similar to some "scaffolding" apps available in other languages / frameworks or as a base CMS to built a user-centric data management product from.  This is a work in progress of course so things could change at any point.  I'm putting it out there right now for others to use and hopefully contribute.
 
 ## Code Example
 
@@ -99,7 +101,7 @@ The CMS should work out of the box with no changes to Loopback models.  However,
     
     app.model( Model );
 
-Which gives you:  [https://db.tt/8MDcIOmG][2]
+Which gives you:  [https://db.tt/8MDcIOmG][3]
 
 ## Special Notes
 I've only tested this against Loopback's memory data connector.  Alledgely it will work against any data source without any changes in code but the devil's in the details there.
@@ -115,18 +117,19 @@ I'll work to have a wiki up soon to get this more fleshed out.  Big ticket items
 
 Fork and pull requests please.
 
-The project uses the git flow method for branching and such - check it out here if you're not familiar with it: [http://danielkummer.github.io/git-flow-cheatsheet/][3]
+The project uses the git flow method for branching and such - check it out here if you're not familiar with it: [http://danielkummer.github.io/git-flow-cheatsheet/][4]
 
 ## Credits
 
-Thanks to [https://github.com/almasaeed2010/AdminLTE][4] for the great open source admin theme!
+Thanks to [https://github.com/almasaeed2010/AdminLTE][5] for the great open source admin theme!
 
 ## License
 
 This project is licensed under Apache 2.0 (see the attached LICENSE file).
 
 
-  [1]: loopback.io
-  [2]: https://db.tt/8MDcIOmG
-  [3]: http://danielkummer.github.io/git-flow-cheatsheet/
-  [4]: https://github.com/almasaeed2010/AdminLTE
+  [1]: https://www.dropbox.com/s/d3r6w5rhoylwz8g/2014-08-10_13-11-56.mp4
+  [2]: loopback.io
+  [3]: https://db.tt/8MDcIOmG
+  [4]: http://danielkummer.github.io/git-flow-cheatsheet/
+  [5]: https://github.com/almasaeed2010/AdminLTE
