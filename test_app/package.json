@@ -6,12 +6,12 @@
 		"start": "node app.js"
 	},
 	"dependencies": {
-		"loopback": "*",
-		"loopback-datasource-juggler": "*"
+		"loopback": "1.9.1",
+		"loopback-datasource-juggler": "1.6.3"
 	},
 	"optionalDependencies": {
-		"loopback-explorer": "*",
-		"loopback-component-push": "*"
+		"loopback-explorer": "1.2.4",
+		"loopback-component-push": "1.2.3"
 	},
 	"name": "cms"
 }

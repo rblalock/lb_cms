@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		shell: {
 			sampleapp: {
-				command: "nodemon test_app/app.js"
+				command: "node test_app/app.js"
 			},
 			test: {
 				command: "mocha test_app/node_modules/lb_cms/test --reporter spec"
