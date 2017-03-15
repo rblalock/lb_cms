@@ -1,3 +1,5 @@
+**note** - This only works for old Loopback 1.x projects
+
 ## Data Editor / CMS for Loopback
 
 [Sample Video][1]
@@ -109,15 +111,6 @@ I've only tested this against Loopback's memory data connector.  Alledgely it wi
 The library is written as a singleton, so one usage per Loopback instance.
 
 The library works for Loopback 1.9.1.  Migration to Loopback 2.0 is planned.
-
-## Roadmap and Plans
-I'll work to have a wiki up soon to get this more fleshed out.  Big ticket items are: It's own NPM (so its easy to install), better security for login (such as CSFR token check, etc), multiple data source, more field types, etc.
-
-## Contributing
-
-Fork and pull requests please.
-
-The project uses the git flow method for branching and such - check it out here if you're not familiar with it: [http://danielkummer.github.io/git-flow-cheatsheet/][4]
 
 ## Credits
 
